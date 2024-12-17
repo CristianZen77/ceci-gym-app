@@ -81,16 +81,36 @@ const AdminDashboard = ({ onLogout }) => {
 
   const handleDeleteUser = (username) => {
     if (window.confirm('¿Estás segura de que deseas eliminar esta usuaria?')) {
-      const storedUsers = JSON.parse(localStorage.getItem('users') || '{}');
-      delete storedUsers[username.toLowerCase()];
-      localStorage.setItem('users', JSON.stringify(storedUsers));
+      try {
+        // Obtener todos los usuarios actuales
+        const storedUsers = JSON.parse(localStorage.getItem('users') || '{}');
+        
+        // Verificar si el usuario existe antes de eliminarlo
+        if (storedUsers[username.toLowerCase()]) {
+          // Eliminar solo el usuario específico
+          delete storedUsers[username.toLowerCase()];
+          
+          // Guardar los usuarios actualizados en localStorage
+          localStorage.setItem('users', JSON.stringify(storedUsers));
+          
+          // Actualizar el estado local (excluyendo admin)
+          const updatedUsers = Object.values(storedUsers).filter(user => !user.isAdmin);
+          setUsers(updatedUsers);
+          
+          setSuccessMessage('Usuario eliminado exitosamente');
+        } else {
+          setError('Usuario no encontrado');
+        }
+      } catch (error) {
+        console.error('Error al eliminar usuario:', error);
+        setError('Error al eliminar usuario');
+      }
       
-      // Actualizar el estado local
-      const updatedUsers = Object.values(storedUsers).filter(user => !user.isAdmin);
-      setUsers(updatedUsers);
-      
-      setSuccessMessage('Usuario eliminado exitosamente');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      // Limpiar mensajes después de 3 segundos
+      setTimeout(() => {
+        setSuccessMessage('');
+        setError('');
+      }, 3000);
     }
   };
 

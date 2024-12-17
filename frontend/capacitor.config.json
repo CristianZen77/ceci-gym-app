@@ -1,6 +1,6 @@
 {
   "appId": "com.fitwoman.app",
-  "appName": "FitWoman",
+  "appName": "Fit Woman",
   "webDir": "build",
   "server": {
     "androidScheme": "https",
@@ -19,12 +19,13 @@
     "SplashScreen": {
       "launchShowDuration": 3000,
       "backgroundColor": "#ff69b4",
-      "androidSplashResourceName": "splash",
-      "androidScaleType": "CENTER_CROP"
+      "androidScaleType": "CENTER_CROP",
+      "splashFullScreen": true,
+      "splashImmersive": true
     }
   },
   "app": {
-    "appName": "FitWoman",
+    "appName": "Fit Woman",
     "appVersion": "1.0.0",
     "appBuild": "1",
     "bundleId": "com.fitwoman.app",
