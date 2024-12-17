@@ -1,23 +1,26 @@
 {
   "short_name": "FitWoman",
-  "name": "FitWoman - Reserva de Clases",
+  "name": "FitWoman - Tu App de Gimnasio",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64",
+      "sizes": "32x32",
       "type": "image/x-icon"
+    },
+    {
+      "src": "icon-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
     },
     {
       "src": "icon-192.png",
       "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any"
+      "sizes": "192x192"
     },
     {
       "src": "icon-512.png",
       "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any"
+      "sizes": "512x512"
     }
   ],
   "start_url": ".",

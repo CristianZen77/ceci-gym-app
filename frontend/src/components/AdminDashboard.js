@@ -79,11 +79,16 @@ const AdminDashboard = ({ onLogout }) => {
     setTimeout(() => setSuccessMessage(''), 3000);
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = (username) => {
     if (window.confirm('¿Estás segura de que deseas eliminar esta usuaria?')) {
-      const updatedUsers = users.filter(user => user.id !== userId);
+      const storedUsers = JSON.parse(localStorage.getItem('users') || '{}');
+      delete storedUsers[username.toLowerCase()];
+      localStorage.setItem('users', JSON.stringify(storedUsers));
+      
+      // Actualizar el estado local
+      const updatedUsers = Object.values(storedUsers).filter(user => !user.isAdmin);
       setUsers(updatedUsers);
-      updateLocalStorage(updatedUsers);
+      
       setSuccessMessage('Usuario eliminado exitosamente');
       setTimeout(() => setSuccessMessage(''), 3000);
     }
@@ -196,7 +201,7 @@ const AdminDashboard = ({ onLogout }) => {
                   {user.isBlocked ? 'Desbloquear' : 'Bloquear'}
                 </button>
                 <button 
-                  onClick={() => handleDeleteUser(user.id)}
+                  onClick={() => handleDeleteUser(user.username)}
                   className="button button-danger"
                 >
                   Eliminar
