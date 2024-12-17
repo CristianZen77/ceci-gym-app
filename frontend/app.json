@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Fit Woman",
+    "slug": "fit-woman",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./public/favicon.ico",
+    "splash": {
+      "image": "./public/logo192.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fitwoman.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./public/logo192.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.fitwoman.app",
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./public/favicon.ico"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fit-woman"
+      }
+    }
+  }
+}
