@@ -1,92 +1,120 @@
-// frontend/src/components/Login.js
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import './Login.css';
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  // Inicializar usuarios si no existen
-  useEffect(() => {
-    const storedUsers = localStorage.getItem('users');
-    if (!storedUsers) {
-      const initialUsers = {
-        'admin': {
-          username: 'admin',
-          password: 'admin123',
-          isAdmin: true,
-          plan: 'Admin',
-          classesRemaining: 0,
-          email: 'admin@example.com',
-          phone: '1234567890'
-        },
-        'maria': {
-          username: 'maria',
-          password: 'maria123',
-          isAdmin: false,
-          plan: 'Full',
-          classesRemaining: 20,
-          email: 'maria@example.com',
-          phone: '9876543210'
-        },
-        'ana': {
-          username: 'ana',
-          password: 'ana123',
-          isAdmin: false,
-          plan: 'Base',
-          classesRemaining: 8,
-          email: 'ana@example.com',
-          phone: '5555555555'
-        }
-      };
-      localStorage.setItem('users', JSON.stringify(initialUsers));
-    }
-  }, []);
-
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    
     const users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[username.toLowerCase()];
 
     if (user && user.password === password) {
-      if (user.isBlocked) {
-        setError('Tu cuenta está bloqueada. Por favor, contacta al administrador.');
-        return;
-      }
       onLogin(user);
     } else {
       setError('Usuario o contraseña incorrectos');
+      setTimeout(() => setError(''), 3000);
     }
   };
 
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    let userFound = null;
+
+    // Buscar usuario por email
+    Object.values(users).forEach(user => {
+      if (user.email && user.email.toLowerCase() === resetEmail.toLowerCase()) {
+        userFound = user;
+      }
+    });
+
+    if (userFound) {
+      // Generar contraseña temporal
+      const tempPassword = Math.random().toString(36).slice(-8);
+      users[userFound.username.toLowerCase()].password = tempPassword;
+      localStorage.setItem('users', JSON.stringify(users));
+
+      setSuccessMessage(`Tu nueva contraseña temporal es: ${tempPassword}`);
+      setTimeout(() => {
+        setSuccessMessage('');
+        setShowResetPassword(false);
+      }, 10000);
+    } else {
+      setError('No se encontró ninguna cuenta con ese email');
+      setTimeout(() => setError(''), 3000);
+    }
+  };
+
+  if (showResetPassword) {
+    return (
+      <div className="login-container">
+        <h2>Restablecer Contraseña</h2>
+        <form onSubmit={handleResetPassword} className="login-form">
+          <div className="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              required
+              placeholder="Ingresa tu email registrado"
+            />
+          </div>
+          <button type="submit" className="button">Restablecer Contraseña</button>
+          <button 
+            type="button" 
+            className="button button-secondary"
+            onClick={() => setShowResetPassword(false)}
+          >
+            Volver al Login
+          </button>
+        </form>
+        {error && <div className="error-message">{error}</div>}
+        {successMessage && <div className="success-message">{successMessage}</div>}
+      </div>
+    );
+  }
+
   return (
-    <div className="form-container">
-      <h1>Iniciar Sesión</h1>
-      {error && <div className="error-message">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className="login-container">
+      <h2>Iniciar Sesión</h2>
+      <form onSubmit={handleLogin} className="login-form">
+        <div className="form-group">
+          <label>Usuario:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Usuario"
             required
+            placeholder="Ingresa tu usuario"
           />
         </div>
-        <div>
+        <div className="form-group">
+          <label>Contraseña:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Contraseña"
             required
+            placeholder="Ingresa tu contraseña"
           />
         </div>
-        <button type="submit" className="button">
-          Ingresar
+        <button type="submit" className="button">Iniciar Sesión</button>
+        <button 
+          type="button" 
+          className="button button-link"
+          onClick={() => setShowResetPassword(true)}
+        >
+          ¿Olvidaste tu contraseña?
         </button>
       </form>
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 };

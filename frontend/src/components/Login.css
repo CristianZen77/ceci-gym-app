@@ -1,0 +1,86 @@
+.login-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff69b4;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: #ff1493;
+}
+
+.button-secondary {
+  background-color: #6c757d;
+}
+
+.button-secondary:hover {
+  background-color: #5a6268;
+}
+
+.button-link {
+  background: none;
+  color: #ff69b4;
+  text-decoration: underline;
+  padding: 0.5rem;
+}
+
+.button-link:hover {
+  background: none;
+  color: #ff1493;
+}
+
+.error-message {
+  color: #dc3545;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+  background-color: #f8d7da;
+  text-align: center;
+}
+
+.success-message {
+  color: #28a745;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border-radius: 5px;
+  background-color: #d4edda;
+  text-align: center;
+  font-weight: 600;
+}
