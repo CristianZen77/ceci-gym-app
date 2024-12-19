@@ -24,19 +24,6 @@ const AdminDashboard = ({ onLogout }) => {
     setUsers(usersArray);
   }, []);
 
-  // Guardar usuarios en localStorage
-  const updateLocalStorage = (updatedUsers) => {
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '{}');
-    const newStoredUsers = { ...storedUsers };
-    
-    // Mantener al admin
-    updatedUsers.forEach(user => {
-      newStoredUsers[user.username.toLowerCase()] = user;
-    });
-
-    localStorage.setItem('users', JSON.stringify(newStoredUsers));
-  };
-
   const getInitialClasses = (plan) => {
     switch (plan) {
       case 'Full':
