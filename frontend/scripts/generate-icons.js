@@ -13,23 +13,31 @@ async function generateIcons() {
   }
 
   try {
+    // Configuración para mantener el fondo negro y el logo en blanco y rosa
+    const processingOptions = {
+      background: { r: 0, g: 0, b: 0, alpha: 1 },
+      fit: 'contain',
+      position: 'center'
+    };
+
     // Generar favicon.ico (32x32)
     await sharp(SOURCE_ICON)
-      .resize(32, 32)
+      .resize(32, 32, processingOptions)
       .toFile(path.join(OUTPUT_DIR, 'favicon.ico'));
     console.log('✓ Generado favicon.ico');
 
     // Generar los íconos PNG
     for (const size of ICON_SIZES) {
       await sharp(SOURCE_ICON)
-        .resize(size, size)
+        .resize(size, size, processingOptions)
         .toFile(path.join(OUTPUT_DIR, `icon-${size}.png`));
       console.log(`✓ Generado icon-${size}.png`);
     }
 
-    console.log('✓ Todos los íconos han sido generados exitosamente');
+    console.log('✓ Todos los iconos han sido generados exitosamente');
   } catch (error) {
-    console.error('Error generando los íconos:', error);
+    console.error('Error generando los iconos:', error);
+    process.exit(1);
   }
 }
 
