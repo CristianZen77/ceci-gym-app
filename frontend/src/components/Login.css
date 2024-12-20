@@ -3,8 +3,11 @@
   margin: 2rem auto;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .login-form {
@@ -21,66 +24,83 @@
 
 .form-group label {
   font-weight: 600;
-  color: #333;
+  color: white;
 }
 
 .form-group input {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 5px;
   font-size: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .button {
   padding: 0.75rem;
   border: none;
   border-radius: 5px;
-  background-color: #ff69b4;
+  background-color: #ff4081;
   color: white;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .button:hover {
+  transform: translateY(-2px);
   background-color: #ff1493;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .button-secondary {
-  background-color: #6c757d;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .button-secondary:hover {
-  background-color: #5a6268;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .button-link {
   background: none;
-  color: #ff69b4;
+  color: #ff4081;
   text-decoration: underline;
   padding: 0.5rem;
+  margin-top: -0.5rem;
+  font-size: 0.9rem;
 }
 
 .button-link:hover {
-  background: none;
   color: #ff1493;
+  background: none;
 }
 
 .error-message {
-  color: #dc3545;
+  color: #ff5252;
   padding: 0.5rem;
   margin-top: 1rem;
   border-radius: 5px;
-  background-color: #f8d7da;
+  background: rgba(255, 82, 82, 0.1);
   text-align: center;
 }
 
 .success-message {
-  color: #28a745;
+  color: #4caf50;
   padding: 0.5rem;
   margin-top: 1rem;
   border-radius: 5px;
-  background-color: #d4edda;
+  background: rgba(76, 175, 80, 0.1);
   text-align: center;
   font-weight: 600;
+}
+
+h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
 }

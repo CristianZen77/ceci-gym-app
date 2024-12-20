@@ -7,7 +7,6 @@ import Dashboard from './components/Dashboard';
 import AdminDashboard from './components/AdminDashboard';
 import BookingCalendar from './components/BookingCalendar';
 import './styles/styles.css';
-import logo from './assets/logo.png';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -68,7 +67,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <img src={logo} alt="Ceci Palacios Gym" className="logo" />
+      <img src="/logo.png" alt="Ceci Palacios Gym" className="logo" />
       {error && <div className="error-message">{error}</div>}
       <Routes>
         <Route 

@@ -15,6 +15,7 @@ const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('users');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [reservations, setReservations] = useState([]);
 
   // Cargar usuarios desde localStorage
   useEffect(() => {
@@ -22,6 +23,7 @@ const AdminDashboard = ({ onLogout }) => {
     // Convertir objeto de usuarios a array, excluyendo al admin
     const usersArray = Object.values(storedUsers).filter(user => !user.isAdmin);
     setUsers(usersArray);
+    loadReservations();
   }, []);
 
   const getInitialClasses = (plan) => {
@@ -35,6 +37,23 @@ const AdminDashboard = ({ onLogout }) => {
       default:
         return 0;
     }
+  };
+
+  const loadReservations = () => {
+    const allUsers = JSON.parse(localStorage.getItem('users') || '{}');
+    let allReservations = [];
+    
+    // Recopilar todas las reservaciones de todos los usuarios
+    Object.values(allUsers).forEach(user => {
+      if (user.bookings) {
+        allReservations = [...allReservations, ...user.bookings.map(res => ({
+          ...res,
+          username: user.username
+        }))];
+      }
+    });
+
+    setReservations(allReservations);
   };
 
   const handleCreateUser = (e) => {
@@ -167,6 +186,12 @@ const AdminDashboard = ({ onLogout }) => {
         >
           Crear Nueva Usuaria
         </button>
+        <button 
+          onClick={() => setActiveTab('reservations')}
+          className={`button ${activeTab === 'reservations' ? '' : 'button-disabled'}`}
+        >
+          Ver Reservaciones
+        </button>
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -197,13 +222,13 @@ const AdminDashboard = ({ onLogout }) => {
               <div className="button-group">
                 <button 
                   onClick={() => handleEditUser(user)}
-                  className="button"
+                  className="button button-edit"
                 >
                   Editar
                 </button>
                 <button 
                   onClick={() => handleToggleBlock(user.username)}
-                  className={`button ${user.isBlocked ? 'button-success' : 'button-danger'}`}
+                  className={`button button-block`}
                 >
                   {user.isBlocked ? 'Desbloquear' : 'Bloquear'}
                 </button>
@@ -260,6 +285,19 @@ const AdminDashboard = ({ onLogout }) => {
           </select>
           <button type="submit" className="button">Crear Usuaria</button>
         </form>
+      )}
+
+      {activeTab === 'reservations' && (
+        <div className="reservations-list">
+          {reservations.map((reservation, index) => (
+            <div key={index} className="reservation-card">
+              <h4>Usuario: {reservation.username}</h4>
+              <p>Fecha: {new Date(reservation.date).toLocaleDateString()}</p>
+              <p>Hora: {reservation.time}</p>
+              <p>Tipo: {reservation.type}</p>
+            </div>
+          ))}
+        </div>
       )}
 
       {activeTab === 'edit' && editingUser && (

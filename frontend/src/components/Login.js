@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Login.css';
 
 const Login = ({ onLogin }) => {
@@ -11,10 +12,26 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    
+    // Verificar si es el usuario admin
+    if (username.toLowerCase() === 'cecilia' && password === 'ceci123') {
+      const adminUser = {
+        username: 'Cecilia',
+        role: 'admin',
+        isAdmin: true
+      };
+      localStorage.setItem('currentUser', JSON.stringify(adminUser));
+      onLogin(adminUser);
+      return;
+    }
+
+    // Verificar otros usuarios
     const users = JSON.parse(localStorage.getItem('users') || '{}');
     const user = users[username.toLowerCase()];
 
     if (user && user.password === password) {
+      user.role = 'user';
+      localStorage.setItem('currentUser', JSON.stringify(user));
       onLogin(user);
     } else {
       setError('Usuario o contraseña incorrectos');
@@ -115,6 +132,9 @@ const Login = ({ onLogin }) => {
         </button>
       </form>
       {error && <div className="error-message">{error}</div>}
+      <p style={{ color: 'white', textAlign: 'center', marginTop: '20px' }}>
+        ¿No tienes una cuenta? <Link to="/register" style={{ color: '#FF4081' }}>Regístrate aquí</Link>
+      </p>
     </div>
   );
 };
