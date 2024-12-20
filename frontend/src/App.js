@@ -17,26 +17,12 @@ const App = () => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:5000/api/auth/verify', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            setIsAuthenticated(true);
-            setUser(userData);
-            setIsAdmin(userData.isAdmin || false);
-          } else {
-            handleLogout();
-          }
-        } catch (error) {
-          setError('Error de conexión al servidor');
-          handleLogout();
-        }
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+      
+      if (token && currentUser) {
+        setIsAuthenticated(true);
+        setUser(currentUser);
+        setIsAdmin(currentUser.isAdmin || false);
       }
     };
 
@@ -46,7 +32,7 @@ const App = () => {
   const handleLogin = (userData, token) => {
     try {
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('currentUser', JSON.stringify(userData));
       setIsAuthenticated(true);
       setUser(userData);
       setIsAdmin(userData.isAdmin || false);
@@ -58,7 +44,7 @@ const App = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('currentUser');
     setIsAuthenticated(false);
     setUser(null);
     setIsAdmin(false);
@@ -114,7 +100,7 @@ const App = () => {
                   // Actualizar el estado del usuario después de una reserva exitosa
                   const updatedUser = { ...user, classesRemaining: user.classesRemaining - 1 };
                   setUser(updatedUser);
-                  localStorage.setItem('user', JSON.stringify(updatedUser));
+                  localStorage.setItem('currentUser', JSON.stringify(updatedUser));
                 }}
               />
             ) : (

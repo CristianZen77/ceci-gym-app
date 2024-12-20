@@ -3,71 +3,64 @@ const fs = require('fs');
 const path = require('path');
 
 async function generateIcons() {
-  const inputImage = path.join(__dirname, '../src/assets/logo.png');
+  const inputImage = path.join(__dirname, '../public/logo.png');
+  const androidResDir = path.join(__dirname, '../android/app/src/main/res');
   const publicDir = path.join(__dirname, '../public');
 
-  // Asegurarse de que el directorio público existe
+  // Asegurarse de que los directorios existen
   if (!fs.existsSync(publicDir)) {
     fs.mkdirSync(publicDir, { recursive: true });
   }
 
-  // Crear un fondo negro
-  const composite = {
-    input: Buffer.from(`<svg>
-      <rect width="100%" height="100%" fill="black"/>
-    </svg>`),
-    blend: 'dest-over'
-  };
-
   try {
-    // Generar favicon.ico (32x32)
-    await sharp(inputImage)
-      .resize(32, 32, {
-        fit: 'contain',
-        position: 'center',
-        background: { r: 0, g: 0, b: 0, alpha: 1 }
-      })
-      .composite([composite])
-      .toFile(path.join(publicDir, 'favicon.ico'));
-    console.log('✓ Generado favicon.ico');
+    // Generar iconos para Android
+    const sizes = {
+      'mipmap-mdpi': 48,
+      'mipmap-hdpi': 72,
+      'mipmap-xhdpi': 96,
+      'mipmap-xxhdpi': 144,
+      'mipmap-xxxhdpi': 192
+    };
 
-    // Generar icon-64.png
-    await sharp(inputImage)
-      .resize(64, 64, {
-        fit: 'contain',
-        position: 'center',
-        background: { r: 0, g: 0, b: 0, alpha: 1 }
-      })
-      .composite([composite])
-      .toFile(path.join(publicDir, 'icon-64.png'));
-    console.log('✓ Generado icon-64.png');
+    for (const [folder, size] of Object.entries(sizes)) {
+      const outputDir = path.join(androidResDir, folder);
+      if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+      }
 
-    // Generar icon-192.png
+      await sharp(inputImage)
+        .resize(size, size, {
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 0 }
+        })
+        .toFile(path.join(outputDir, 'ic_launcher.png'));
+
+      await sharp(inputImage)
+        .resize(size, size, {
+          fit: 'contain',
+          background: { r: 0, g: 0, b: 0, alpha: 0 }
+        })
+        .toFile(path.join(outputDir, 'ic_launcher_round.png'));
+    }
+
+    // Generar iconos para la web
     await sharp(inputImage)
       .resize(192, 192, {
         fit: 'contain',
-        position: 'center',
-        background: { r: 0, g: 0, b: 0, alpha: 1 }
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
       })
-      .composite([composite])
-      .toFile(path.join(publicDir, 'icon-192.png'));
-    console.log('✓ Generado icon-192.png');
+      .toFile(path.join(publicDir, 'logo192.png'));
 
-    // Generar icon-512.png
     await sharp(inputImage)
       .resize(512, 512, {
         fit: 'contain',
-        position: 'center',
-        background: { r: 0, g: 0, b: 0, alpha: 1 }
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
       })
-      .composite([composite])
-      .toFile(path.join(publicDir, 'icon-512.png'));
-    console.log('✓ Generado icon-512.png');
+      .toFile(path.join(publicDir, 'logo512.png'));
 
-    console.log('✓ Todos los iconos han sido generados exitosamente');
+    console.log('Iconos generados exitosamente');
   } catch (error) {
-    console.error('Error generando los iconos:', error);
-    process.exit(1);
+    console.error('Error generando iconos:', error);
   }
 }
 

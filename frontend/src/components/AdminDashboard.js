@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './AdminDashboard.css';
 
-const AdminDashboard = ({ onLogout }) => {
+const AdminDashboard = ({ onLogout, user }) => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({
     username: '',
@@ -167,11 +167,14 @@ const AdminDashboard = ({ onLogout }) => {
   };
 
   return (
-    <div className="admin-content">
-      <nav className="admin-nav">
+    <div className="admin-dashboard">
+      <div className="admin-nav">
         <h1>Panel de Administración</h1>
-        <button onClick={onLogout} className="button">Cerrar Sesión</button>
-      </nav>
+        <div>
+          <span>Bienvenido, {user.username}</span>
+          <button onClick={onLogout} className="button">Cerrar Sesión</button>
+        </div>
+      </div>
 
       <div className="admin-tabs">
         <button 

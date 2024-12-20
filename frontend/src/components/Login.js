@@ -10,18 +10,17 @@ const Login = ({ onLogin }) => {
   const [resetEmail, setResetEmail] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     
     // Verificar si es el usuario admin
-    if (username.toLowerCase() === 'cecilia' && password === 'ceci123') {
+    if (username === 'Cecilia' && password === 'ceci123') {
       const adminUser = {
         username: 'Cecilia',
         role: 'admin',
         isAdmin: true
       };
-      localStorage.setItem('currentUser', JSON.stringify(adminUser));
-      onLogin(adminUser);
+      onLogin(adminUser, 'dummy-token');
       return;
     }
 
@@ -32,7 +31,7 @@ const Login = ({ onLogin }) => {
     if (user && user.password === password) {
       user.role = 'user';
       localStorage.setItem('currentUser', JSON.stringify(user));
-      onLogin(user);
+      onLogin(user, 'dummy-token');
     } else {
       setError('Usuario o contraseña incorrectos');
       setTimeout(() => setError(''), 3000);
