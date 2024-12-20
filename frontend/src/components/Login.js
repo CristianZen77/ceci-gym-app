@@ -13,27 +13,34 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     
-    // Verificar si es el usuario admin
-    if (username === 'Cecilia' && password === 'ceci123') {
-      const adminUser = {
-        username: 'Cecilia',
-        role: 'admin',
-        isAdmin: true
-      };
-      onLogin(adminUser, 'dummy-token');
-      return;
-    }
+    try {
+      // Verificar si es el usuario admin
+      if (username === 'Admin' && password === 'admin123') {
+        const adminUser = {
+          username: 'Admin',
+          role: 'admin',
+          isAdmin: true
+        };
+        localStorage.setItem('currentUser', JSON.stringify(adminUser));
+        onLogin(adminUser, 'dummy-token');
+        return;
+      }
 
-    // Verificar otros usuarios
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const user = users[username.toLowerCase()];
+      // Verificar otros usuarios
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      const user = users[username.toLowerCase()];
 
-    if (user && user.password === password) {
-      user.role = 'user';
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      onLogin(user, 'dummy-token');
-    } else {
-      setError('Usuario o contraseña incorrectos');
+      if (user && user.password === password && !user.isBlocked) {
+        user.role = 'user';
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        onLogin(user, 'dummy-token');
+      } else {
+        setError('Usuario o contraseña incorrectos');
+        setTimeout(() => setError(''), 3000);
+      }
+    } catch (error) {
+      console.error('Error en login:', error);
+      setError('Error al iniciar sesión');
       setTimeout(() => setError(''), 3000);
     }
   };
