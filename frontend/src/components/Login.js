@@ -44,24 +44,35 @@ const Login = ({ onLogin }) => {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Iniciar Sesión</h2>
+        <div className="login-header">
+          <img src="/logo.png" alt="Fit Woman Logo" className="login-logo" />
+          <h2>Fit Woman</h2>
+        </div>
         <form onSubmit={handleLogin}>
-          <input 
-            type="text" 
-            placeholder="Usuario" 
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required 
-          />
-          <input 
-            type="password" 
-            placeholder="Contraseña" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required 
-          />
+          <div className="input-group">
+            <label htmlFor="username">Usuario</label>
+            <input 
+              id="username"
+              type="text" 
+              placeholder="Ingresa tu usuario" 
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required 
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Contraseña</label>
+            <input 
+              id="password"
+              type="password" 
+              placeholder="Ingresa tu contraseña" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
+          </div>
           {error && <p className="error-message">{error}</p>}
-          <button type="submit">Iniciar Sesión</button>
+          <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
       </div>
     </div>

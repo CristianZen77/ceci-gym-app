@@ -1,60 +1,75 @@
 .login-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  backdrop-filter: blur(10px);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.form-group label {
-  font-weight: 600;
-  color: white;
+.login-logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 15px;
 }
 
-.form-group input {
-  padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.login-header h2 {
+  color: #333;
+  margin: 0;
+  font-size: 24px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 1rem;
-  background: rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #FF4081;
   color: white;
-}
-
-.form-group input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.button {
-  padding: 0.75rem;
   border: none;
   border-radius: 5px;
-  background-color: #ff4081;
-  color: white;
-  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
-.button:hover {
-  transform: translateY(-2px);
-  background-color: #ff1493;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.login-button:hover {
+  background-color: #F50057;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .button-secondary {
@@ -77,15 +92,6 @@
 .button-link:hover {
   color: #ff1493;
   background: none;
-}
-
-.error-message {
-  color: #ff5252;
-  padding: 0.5rem;
-  margin-top: 1rem;
-  border-radius: 5px;
-  background: rgba(255, 82, 82, 0.1);
-  text-align: center;
 }
 
 .success-message {
