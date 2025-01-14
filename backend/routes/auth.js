@@ -65,46 +65,68 @@ router.post('/register', [
 });
 
 // Ruta POST api/auth/login
-router.post('/login', [
-  check('username', 'El nombre de usuario es requerido').exists(),
-  check('password', 'La contraseña es requerida').exists()
-], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { username, password } = req.body;
-
+router.post('/login', async (req, res) => {
   try {
-    let user = await User.findOne({ username });
-    if (!user) {
-      return res.status(400).json({ msg: 'Credenciales inválidas' });
+    const { username, password } = req.body;
+
+    // Verificar credenciales de admin
+    if (username === 'Admin' && password === 'admin123') {
+      const token = jwt.sign(
+        { username: 'Admin', isAdmin: true },
+        process.env.JWT_SECRET || 'your-secret-key',
+        { expiresIn: '24h' }
+      );
+
+      return res.json({
+        success: true,
+        token,
+        user: {
+          username: 'Admin',
+          isAdmin: true,
+          role: 'admin'
+        }
+      });
+    }
+
+    // Si no es admin, verificar otros usuarios
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const user = users[username.toLowerCase()];
+
+    if (!user || user.password !== password) {
+      return res.status(401).json({
+        success: false,
+        message: 'Usuario o contraseña incorrectos'
+      });
     }
 
     if (user.isBlocked) {
-      return res.status(403).json({ msg: 'Usuario bloqueado. Contacte al administrador.' });
+      return res.status(403).json({
+        success: false,
+        message: 'Usuario bloqueado'
+      });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Credenciales inválidas' });
-    }
+    const token = jwt.sign(
+      { username: user.username, isAdmin: false },
+      process.env.JWT_SECRET || 'your-secret-key',
+      { expiresIn: '24h' }
+    );
 
-    const payload = {
+    res.json({
+      success: true,
+      token,
       user: {
-        id: user.id,
-        isAdmin: user.isAdmin
+        ...user,
+        role: 'user'
       }
-    };
-
-    jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '1h' }, (err, token) => {
-      if (err) throw err;
-      res.json({ token, isAdmin: user.isAdmin });
     });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Error del servidor');
+
+  } catch (error) {
+    console.error('Error en login:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error en el servidor'
+    });
   }
 });
 
