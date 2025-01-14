@@ -7,12 +7,11 @@
     "icon": "./public/logo.png",
     "splash": {
       "image": "./public/logo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "resizeMode": "contain", 
+      "backgroundColor": "#FF4081"  
     },
     "updates": {
       "fallbackToCacheTimeout": 0
-      
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,18 +23,14 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./public/logo.png",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#FF4081"
       },
+      "icon": "./public/logo.png",
       "package": "com.fitwoman.app",
       "versionCode": 1
     },
     "web": {
       "favicon": "./public/logo.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "fit-woman"
-      }
     }
   }
 }

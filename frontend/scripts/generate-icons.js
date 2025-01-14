@@ -2,66 +2,38 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-async function generateIcons() {
-  const inputImage = path.join(__dirname, '../public/logo.png');
-  const androidResDir = path.join(__dirname, '../android/app/src/main/res');
-  const publicDir = path.join(__dirname, '../public');
+const inputIcon = path.join(__dirname, '../public/logo.png');
+const androidResDir = path.join(__dirname, '../android/app/src/main/res');
 
-  // Asegurarse de que los directorios existen
-  if (!fs.existsSync(publicDir)) {
-    fs.mkdirSync(publicDir, { recursive: true });
-  }
+const androidIconSizes = [
+  { dir: 'mipmap-mdpi', size: 48 },
+  { dir: 'mipmap-hdpi', size: 72 },
+  { dir: 'mipmap-xhdpi', size: 96 },
+  { dir: 'mipmap-xxhdpi', size: 144 },
+  { dir: 'mipmap-xxxhdpi', size: 192 }
+];
 
-  try {
-    // Generar iconos para Android
-    const sizes = {
-      'mipmap-mdpi': 48,
-      'mipmap-hdpi': 72,
-      'mipmap-xhdpi': 96,
-      'mipmap-xxhdpi': 144,
-      'mipmap-xxxhdpi': 192
-    };
+async function generateAndroidIcons() {
+  for (const iconSize of androidIconSizes) {
+    const outputPath = path.join(androidResDir, iconSize.dir, 'ic_launcher.png');
+    const outputRoundPath = path.join(androidResDir, iconSize.dir, 'ic_launcher_round.png');
 
-    for (const [folder, size] of Object.entries(sizes)) {
-      const outputDir = path.join(androidResDir, folder);
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
+    try {
+      // Resize and save square icon
+      await sharp(inputIcon)
+        .resize(iconSize.size, iconSize.size)
+        .toFile(outputPath);
 
-      await sharp(inputImage)
-        .resize(size, size, {
-          fit: 'contain',
-          background: { r: 0, g: 0, b: 0, alpha: 0 }
-        })
-        .toFile(path.join(outputDir, 'ic_launcher.png'));
+      // Resize and save round icon
+      await sharp(inputIcon)
+        .resize(iconSize.size, iconSize.size)
+        .toFile(outputRoundPath);
 
-      await sharp(inputImage)
-        .resize(size, size, {
-          fit: 'contain',
-          background: { r: 0, g: 0, b: 0, alpha: 0 }
-        })
-        .toFile(path.join(outputDir, 'ic_launcher_round.png'));
+      console.log(`Generated icons for ${iconSize.dir}`);
+    } catch (error) {
+      console.error(`Error generating icons for ${iconSize.dir}:`, error);
     }
-
-    // Generar iconos para la web
-    await sharp(inputImage)
-      .resize(192, 192, {
-        fit: 'contain',
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
-      })
-      .toFile(path.join(publicDir, 'logo192.png'));
-
-    await sharp(inputImage)
-      .resize(512, 512, {
-        fit: 'contain',
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
-      })
-      .toFile(path.join(publicDir, 'logo512.png'));
-
-    console.log('Iconos generados exitosamente');
-  } catch (error) {
-    console.error('Error generando iconos:', error);
   }
 }
 
-generateIcons();
+generateAndroidIcons();
