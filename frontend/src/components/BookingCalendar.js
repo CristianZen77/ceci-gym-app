@@ -11,9 +11,7 @@ const BookingCalendar = ({ user, onBookingComplete }) => {
   // Horarios fijos de clases
   const classSchedules = {
     'lunes': [{ time: '20:00', type: 'Full Body' }],
-    'martes': [{ time: '20:00', type: 'Functional' }],
     'miércoles': [{ time: '20:00', type: 'Full Body' }],
-    'jueves': [{ time: '20:00', type: 'Functional' }],
     'viernes': [{ time: '20:00', type: 'Full Body' }]
   };
 

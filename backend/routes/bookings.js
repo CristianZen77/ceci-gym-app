@@ -27,11 +27,8 @@ router.post('/', auth, async (req, res) => {
 
     // Verificar el día y la clase
     const dayOfWeek = bookingDate.getDay();
-    if (className === 'Full Body' && ![1, 3, 5].includes(dayOfWeek)) {
-      return res.status(400).json({ msg: 'Full Body solo disponible Lunes, Miércoles y Viernes' });
-    }
-    if (className === 'Funcional' && ![2, 4].includes(dayOfWeek)) {
-      return res.status(400).json({ msg: 'Funcional solo disponible Martes y Jueves' });
+    if (className === 'Clase' && ![1, 3, 5].includes(dayOfWeek)) {
+      return res.status(400).json({ msg: 'Clase solo disponible Lunes, Miércoles y Viernes' });
     }
 
     const booking = new Booking({
