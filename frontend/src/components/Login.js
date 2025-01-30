@@ -11,9 +11,9 @@ const Login = ({ onLogin }) => {
     
     try {
       // Verificar si es el usuario admin
-      if (username === 'Admin' && password === 'admin123') {
+      if (username === 'Cecilia' && password === 'ceci123') {
         const adminUser = {
-          username: 'Admin',
+          username: 'Cecilia',
           role: 'admin',
           isAdmin: true
         };
