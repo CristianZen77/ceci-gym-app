@@ -20,11 +20,21 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Debug Information
+        run: |
+          pwd
+          ls -R
+          node --version
+          npm --version
+          java --version
+          gradle --version
+
       - name: Install dependencies
         working-directory: ./frontend
         run: |
           npm install
           npm install -g @capacitor/cli
+          npm install -g expo-cli
 
       - name: Build React app
         working-directory: ./frontend
@@ -51,12 +61,12 @@ jobs:
       - name: Sign APK
         working-directory: ./frontend/android
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
           ./gradlew signRelease \
             -Pandroid.injected.signing.store.file=$PWD/keystore.jks \
-            -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD }}" \
-            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
-            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}"
+            -Pandroid.injected.signing.store.password="${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.ANDROID_KEY_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.ANDROID_KEY_PASSWORD }}"
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
