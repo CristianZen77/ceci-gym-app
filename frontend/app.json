@@ -7,8 +7,8 @@
     "icon": "./public/logo.png",
     "splash": {
       "image": "./public/logo.png",
-      "resizeMode": "contain", 
-      "backgroundColor": "#FF4081"  
+      "backgroundColor": "#ffffff",
+      "resizeMode": "contain"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,16 +21,21 @@
       "bundleIdentifier": "com.fitwoman.app"
     },
     "android": {
+      "icon": "./public/logo.png",
       "adaptiveIcon": {
         "foregroundImage": "./public/logo.png",
-        "backgroundColor": "#FF4081"
+        "backgroundColor": "#ffffff"
       },
-      "icon": "./public/logo.png",
       "package": "com.fitwoman.app",
       "versionCode": 1
     },
     "web": {
       "favicon": "./public/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "24bc8e7f-ee07-4529-9fe6-6247cac1f6fb"
+      }
     }
   }
 }
