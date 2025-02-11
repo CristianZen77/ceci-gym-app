@@ -35,4 +35,4 @@ android/.gradle/
 
 # Capacitor
 ios/
-android/
+# android/  # Comentar esta línea para rastrear archivos en android/
